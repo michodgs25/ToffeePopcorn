@@ -136,8 +136,10 @@ namespace Movies.Data
                 }
                 //Movies
                 if (!context.Movies.Any())
-                {
-                    context.Movies.AddRange(new List<Movie>()
+                    if (!context.Movies.Any())
+                        if (!context.Movies.Any())
+                        {
+                            context.Movies.AddRange(new List<Movie>()
                     {
                         new Movie()
                         {
@@ -212,8 +214,8 @@ namespace Movies.Data
                             MovieCategory = MovieCategory.Drama
                         }
                     });
-                    context.SaveChanges();
-                }
+                            context.SaveChanges();
+                        }
                 //Actors & Movies
                 if (!context.Actors_Movies.Any())
                 {
