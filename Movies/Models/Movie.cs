@@ -15,9 +15,13 @@ namespace Movies.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public double Price { get; set;}
+        [Display(Name = "Movie Image")]
         public string ImageURL { get; set; }
+        [Display(Name = "Movie Opens")]
         public DateTime StartDate { get; set; }
+        [Display(Name = "Movie Ends")]
         public DateTime EndDate { get; set; }
+        [Display(Name = "Movie Category")]
         public MovieCategory MovieCategory { get; set; }
 
         //Relationships
