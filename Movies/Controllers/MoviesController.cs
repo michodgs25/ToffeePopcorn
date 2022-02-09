@@ -8,18 +8,17 @@ using System.Threading.Tasks;
 
 namespace Movies.Controllers
 {
-    public class CinemasController : Controller
+    public class MoviesController : Controller
     {
-
         private readonly AppDbContext _context;
 
-        public CinemasController(AppDbContext context)
+        public MoviesController(AppDbContext context)
         {
             _context = context;
         }
         public async Task<IActionResult> Index()
         {
-            var allCinemas = await _context.Cinemas.ToListAsync();
+            var allMovies = await _context.Movies.ToListAsync();
             return View();
         }
     }
