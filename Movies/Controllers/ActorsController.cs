@@ -29,19 +29,18 @@ namespace Movies.Controllers
             return View();
         }
 
-        [HttpPost]
-
+        [HttpPost, ActionName("Create")]
         public async Task<IActionResult> Create([Bind("FullName, ProfilePictureURL, Bio")]Actor actor)
         {
             if(ModelState.IsValid)
             {
                 return View(actor);
             }
-           await _service.AddAsync(actor);
+            await _service.AddAsync(actor);
             return RedirectToAction(nameof(Index));
         }
 
-        //GET ACTORS DETAILS
+        //GET ACTORS DETAILS/1
 
         public async Task<IActionResult> Details(int id)
         {
@@ -52,7 +51,7 @@ namespace Movies.Controllers
         }
 
 
-        //UPDATE: Actors/Edit
+        //UPDATE: Actors/Edit/1
         public async Task<IActionResult> Edit(int id)
         {
             var actorDetails = await _service.GetByIdAsync(id);
@@ -60,8 +59,7 @@ namespace Movies.Controllers
             return View(actorDetails);
         }
 
-        [HttpPost]
-
+        [HttpPost, ActionName("Edit")]
         public async Task<IActionResult> Edit(int id, [Bind("Id, FullName, ProfilePictureURL, Bio")] Actor actor)
         {
             if (ModelState.IsValid)
@@ -69,6 +67,25 @@ namespace Movies.Controllers
                 return View(actor);
             }
             await _service.UpdateAsync(id, actor);
+            return RedirectToAction(nameof(Index));
+        }
+
+        //Delete: Actors/Delete/1
+        public async Task<IActionResult> Delete(int id)
+        {
+            var actorDetails = await _service.GetByIdAsync(id);
+            if (actorDetails == null) return View("NotFound");
+            return View(actorDetails);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var actorDetails = await _service.GetByIdAsync(id);
+            if (actorDetails == null) return View("NotFound");
+
+
+            await _service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }
