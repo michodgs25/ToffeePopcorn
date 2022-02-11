@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Movies.Data;
+﻿using Movies.Data;
 using Movies.Data.Services;
 using Movies.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Movies.Controllers
+
 {
     public class ActorsController : Controller
     {
@@ -23,16 +25,16 @@ namespace Movies.Controllers
             return View(data);
         }
 
-        //GET: Actors/Create
-        public async Task<IActionResult> Create()
+        //Get: Actors/Create
+        public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost, ActionName("Create")]
-        public async Task<IActionResult> Create([Bind("FullName, ProfilePictureURL, Bio")]Actor actor)
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("FullName,ProfilePictureURL,Bio")] Actor actor)
         {
-            if(ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(actor);
             }
@@ -40,8 +42,8 @@ namespace Movies.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //GET ACTORS DETAILS/1
-
+        //Get: Actors/Details/1
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var actorDetails = await _service.GetByIdAsync(id);
@@ -50,8 +52,7 @@ namespace Movies.Controllers
             return View(actorDetails);
         }
 
-
-        //UPDATE: Actors/Edit/1
+        //Get: Actors/Edit/1
         public async Task<IActionResult> Edit(int id)
         {
             var actorDetails = await _service.GetByIdAsync(id);
@@ -59,10 +60,10 @@ namespace Movies.Controllers
             return View(actorDetails);
         }
 
-        [HttpPost, ActionName("Edit")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, FullName, ProfilePictureURL, Bio")] Actor actor)
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,ProfilePictureURL,Bio")] Actor actor)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(actor);
             }
@@ -70,7 +71,7 @@ namespace Movies.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //Delete: Actors/Delete/1
+        //Get: Actors/Delete/1
         public async Task<IActionResult> Delete(int id)
         {
             var actorDetails = await _service.GetByIdAsync(id);
@@ -83,7 +84,6 @@ namespace Movies.Controllers
         {
             var actorDetails = await _service.GetByIdAsync(id);
             if (actorDetails == null) return View("NotFound");
-
 
             await _service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
